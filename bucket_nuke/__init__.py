@@ -28,10 +28,8 @@ def nuke_buckets(buckets, region=None, profile=None, debug=False):
     '''
     import boto3
     results = []
-    aws = boto3.Session(profile_name=profile,
-                        region_name=region,
-                        signature_version='s3v4')
-    s3 = aws.resource('s3')
+    aws = boto3.Session(profile_name=profile, region_name=region)
+    s3 = aws.resource('s3', signature_version='s3v4')
     B = [b for b in s3.buckets.all() if b.name in buckets]
     for b in B:
         o_list = [o.key for o in b.objects.all()]
