@@ -2,7 +2,7 @@
 '''
 Ryan Kennedy (ryno75@gmail.com), 2016-07-12
 '''
-version = '0.3.0'
+version = '0.4.0'
 
 
 class Result():

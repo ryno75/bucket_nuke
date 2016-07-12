@@ -38,16 +38,15 @@ def parse_args():
         type=str,
         required=False,
         metavar='AWS_PROFILE',
-        help='AWS auth profile stored in ~/.aws/credendtials file')
+        help='AWS profile stored in ~/.aws/credendtials file')
     arg_parser.add_argument(
         '-r',
         '--region',
         type=str,
         required=False,
         default='us-east-1',
-        choices=aws_repo_mgr.regions,
-        metavar='AWS_REGION',
-        help='AWS CodeCommit Region (currently only us-east-1 is supported)')
+        metavar='S3_REGION',
+        help='AWS S3 Region')
     arg_parser.add_argument(
         '--debug',
         action='store_true',
