@@ -62,6 +62,7 @@ def main():
     profile = args.profile
     debug = args.debug
 
+    print('Nuking S3 buckets: {}'.format(', '.join(buckets)))
     results = nuke_buckets(buckets,
                            region=region,
                            profile=profile,
@@ -71,10 +72,10 @@ def main():
         print('Deleted S3 bucket: {}'.format(b.name))
         if debug:
             print('  deleted {} objects:'.format(len(b.objects)))
-            print('bjects:\n    '.format(len(b.objects)))
-            print('\n    ' + '\n    '.join(b.objects))
+            print('    ' + '\n    '.join(b.objects))
             print('  deleted {} object versions:'.format(len(b.object_versions)))
-            print('\n    ' + '\n    '.join(b.object_versions))
+            print('    ' + '\n    '.join(b.object_versions))
+    print
 
 
 if __name__ == '__main__':
