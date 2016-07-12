@@ -4,7 +4,7 @@ Ryan Kennedy (ryno75@gmail.com), 2016-07-12
 '''
 import boto3
 
-version = '0.1.0'
+version = '0.2.0'
 
 
 class Result():
