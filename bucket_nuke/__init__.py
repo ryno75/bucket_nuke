@@ -2,9 +2,7 @@
 '''
 Ryan Kennedy (ryno75@gmail.com), 2016-07-12
 '''
-import boto3
-
-version = '0.2.0'
+version = '0.3.0'
 
 
 class Result():
@@ -28,6 +26,7 @@ def nuke_buckets(buckets, region=None, profile=None, debug=False):
     :type verbose: bool
     :param buckets: enable verbose printing
     '''
+    import boto3
     results = []
     s3 = boto3.resource('s3', profile_name=profile, region_name=region)
     B = [b for b in s3.buckets.all() if b.name in buckets]

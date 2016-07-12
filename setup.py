@@ -20,7 +20,7 @@ def history():
     with open('HISTORY.md') as fh:
         return fh.read().replace('.. :changelog:', '')
 
-VERSION = '0.2.0'
+VERSION = '0.3.0'
 REQUIRES = [
     'argparse',
     'boto3'
