@@ -13,7 +13,7 @@ from bucket_nuke import nuke_buckets
 
 # defaults
 progname = os.path.basename(sys.argv[0])
-version = nuke_buckets.version
+version = bucket_nuke.version
 
 
 def parse_args():
