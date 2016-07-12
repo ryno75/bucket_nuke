@@ -1,0 +1,81 @@
+#!/usr/bin/env python
+'''
+nuke_buckets
+Deletes all objects, object_versions, and bucket for a list of S3 buckets
+
+Ryan Kennedy (ryno75@gmail.com), 2016-07-12
+'''
+import argparse
+from bucket_nuke import nuke_buckets
+
+
+# defaults
+progname = os.path.basename(sys.argv[0])
+version = nuke_buckets.version
+
+
+def parse_args():
+    '''
+    Parse arguments passed to script
+    '''
+    if '-v' in sys.argv:
+        print('{0} version: {1}'.format(progname, version))
+        sys.exit()
+
+    arg_parser = argparse.ArgumentParser(
+        description='Deletes all objects, object_versions, and bucket '
+                    'for a list of S3 buckets')
+    arg_parser.add_argument(
+        'buckets',
+        type=str,
+        nargs='+',
+        metavar='BUCKET',
+        help='AWS S3 Bucket name')
+    arg_parser.add_argument(
+        '-p',
+        '--profile',
+        type=str,
+        required=False,
+        metavar='AWS_PROFILE',
+        help='AWS auth profile stored in ~/.aws/credendtials file')
+    arg_parser.add_argument(
+        '-r',
+        '--region',
+        type=str,
+        required=False,
+        default='us-east-1',
+        choices=aws_repo_mgr.regions,
+        metavar='AWS_REGION',
+        help='AWS CodeCommit Region (currently only us-east-1 is supported)')
+    arg_parser.add_argument(
+        '--debug',
+        action='store_true',
+        help='Enable verbose debugging output')
+
+    return arg_parser.parse_args()
+
+
+def main():
+    args = parse_args()
+    buckets = args.buckets
+    region = args.region
+    profile = args.profile
+    debug = args.debug
+
+    results = nuke_buckets(buckets,
+                           region=region,
+                           profile=profile,
+                           debug=debug)
+
+    for b in results:
+        print('Deleted S3 bucket: {}'.format(b.name))
+        if debug:
+            print('  deleted {} objects:'.format(len(b.objects)))
+            print('bjects:\n    '.format(len(b.objects)))
+            print('\n    ' + '\n    '.join(b.objects))
+            print('  deleted {} object versions:'.format(len(b.object_versions)))
+            print('\n    ' + '\n    '.join(b.object_versions))
+
+
+if __name__ == '__main__':
+    main()
