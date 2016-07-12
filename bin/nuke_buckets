@@ -6,6 +6,8 @@ Deletes all objects, object_versions, and bucket for a list of S3 buckets
 Ryan Kennedy (ryno75@gmail.com), 2016-07-12
 '''
 import argparse
+import os
+import sys
 from bucket_nuke import nuke_buckets
 
 
