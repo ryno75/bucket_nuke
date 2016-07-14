@@ -10,6 +10,7 @@ import os
 import sys
 from bucket_nuke import nuke_buckets, version
 
+py3 = True if sys.version_info[0] > 2 else False
 
 # defaults
 progname = os.path.basename(sys.argv[0])
@@ -62,20 +63,40 @@ def main():
     profile = args.profile
     debug = args.debug
 
-    print('Nuking S3 buckets: {}'.format(', '.join(buckets)))
-    results = nuke_buckets(buckets,
-                           region=region,
-                           profile=profile,
-                           debug=debug)
+    print('\nSet to delete the following S3 buckets and all objects/versions:')
+    print('  ' + '\n  {}'.join(buckets) + '\n')
+    print('!! WARNING: This operation is VERY destructive and cannot be '
+          'undone !!')
+    q = 'Are you ABSOLUTELY CERTAIN you wish to proceed? [YES/no]: '
+    a = None
+    while a not in ('YES', 'no', 'No', 'NO', 'n', 'N'):
+        if py3:
+            a = input(q)
+        else:
+            a = raw_input(q)
+    if a == 'YES':
+        print('Nuking S3 buckets: {}'.format(', '.join(buckets)) + '\n')
+        results = nuke_buckets(buckets,
+                               region=region,
+                               profile=profile,
+                               debug=debug)
 
-    for b in results:
-        print('Deleted S3 bucket: {}'.format(b.name))
-        if debug:
-            print('  deleted {} objects:'.format(len(b.objects)))
-            print('    ' + '\n    '.join(b.objects))
-            print('  deleted {} object versions:'.format(len(b.object_versions)))
-            print('    ' + '\n    '.join(b.object_versions))
-    print
+        if results:
+            for b in results:
+                print('Deleted S3 bucket: {}'.format(b.name))
+                if debug:
+                    print('  deleted {} objects:'.format(len(b.objects)))
+                    print('    ' + '\n    '.join(b.objects))
+                    print('  deleted {} object versions:'.format(
+                          len(b.object_versions)))
+                    print('    ' + '\n    '.join(b.object_versions))
+                print
+        else:
+            print('None of the buckets specified were found using your AWS '
+                  'credentials. No action performed.')
+    else:
+        print('\nNuke aborted on user input.')
+        sys.exit(1)
 
 
 if __name__ == '__main__':
